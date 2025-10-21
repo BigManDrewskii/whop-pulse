@@ -49,7 +49,15 @@ export function LandingNavbar() {
 							)}
 						</button>
 
-						{/* CTA Button */}
+						{/* Open Dashboard Button (for existing users) */}
+						<Link
+							href="https://whop.com/hub/app_kYOQwOZSTaTdhi"
+							className="px-4 py-2 text-gray-700 hover:text-primary-600 rounded-lg font-medium hover:bg-gray-100 transition-all duration-200"
+						>
+							Open Dashboard
+						</Link>
+
+						{/* Install CTA Button */}
 						<Link
 							href="https://whop.com/apps/app_kYOQwOZSTaTdhi/install/"
 							className="px-6 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow-md"

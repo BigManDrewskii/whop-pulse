@@ -45,6 +45,12 @@ export default function DiscoverPage() {
 						>
 							Install Pulse →
 						</Link>
+						<Link
+							href="https://whop.com/hub/app_kYOQwOZSTaTdhi"
+							className="px-8 py-4 bg-white text-primary-600 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 border-2 border-primary-200 hover:border-primary-300 shadow-md hover:shadow-lg"
+						>
+							Open Dashboard →
+						</Link>
 						<a
 							href="#features"
 							className="px-8 py-4 bg-white text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 border-2 border-gray-200"
@@ -236,6 +242,12 @@ export default function DiscoverPage() {
 								className="px-10 py-4 bg-white text-primary-600 rounded-lg font-bold hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
 							>
 								Install Pulse - It's Free
+							</Link>
+							<Link
+								href="https://whop.com/hub/app_kYOQwOZSTaTdhi"
+								className="px-10 py-4 bg-primary-700 text-white rounded-lg font-bold hover:bg-primary-800 transition-all duration-200 shadow-lg hover:shadow-xl"
+							>
+								Open Dashboard →
 							</Link>
 							<span className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700/50 text-white rounded-lg text-sm font-medium">
 								<svg
