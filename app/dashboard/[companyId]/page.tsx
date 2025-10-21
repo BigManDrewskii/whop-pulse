@@ -1,3 +1,4 @@
+import { validateToken } from "@whop-apps/sdk";
 import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import { supabase } from "@/lib/supabase";
@@ -85,29 +86,28 @@ export default async function ExperiencePage({
 	const headersList = await headers();
 	const { companyId } = await params;
 
-	// Debug: Log app ID before token verification
+	// Debug: Log environment before token validation
 	console.log('[Dashboard Page] Environment check:');
-	console.log('[Dashboard Page] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
 	console.log('[Dashboard Page] NEXT_PUBLIC_WHOP_COMPANY_ID:', process.env.NEXT_PUBLIC_WHOP_COMPANY_ID);
 	console.log('[Dashboard Page] Company ID from params:', companyId);
-	console.log('[Dashboard Page] Headers:', {
-		authorization: headersList.get('authorization') ? '***' + headersList.get('authorization')?.slice(-8) : 'none',
-		'x-whop-authorization': headersList.get('x-whop-authorization') ? '***' + headersList.get('x-whop-authorization')?.slice(-8) : 'none'
-	});
 
-	// Validate user token
+	// Validate user token using @whop-apps/sdk
 	let userId: string;
 	try {
-		console.log('[Dashboard Page] Calling whopSdk.verifyUserToken...');
-		const token = await whopSdk.verifyUserToken(headersList);
-		console.log('[Dashboard Page] Token verified successfully, userId:', token.userId);
-		userId = token.userId;
+		console.log('[Dashboard Page] Calling validateToken...');
+		const { userId: validatedUserId } = await validateToken({ headers: headersList });
+
+		if (!validatedUserId) {
+			throw new Error('No userId returned from validateToken');
+		}
+
+		console.log('[Dashboard Page] Token validated successfully, userId:', validatedUserId);
+		userId = validatedUserId;
 	} catch (error: any) {
 		console.error("[Dashboard Page] Token validation failed:", error);
 		console.error("[Dashboard Page] Error details:", {
 			message: error?.message,
-			stack: error?.stack,
-			response: error?.response?.data
+			stack: error?.stack
 		});
 		return (
 			<AuthError

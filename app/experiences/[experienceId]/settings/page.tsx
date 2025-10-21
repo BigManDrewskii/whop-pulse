@@ -1,3 +1,4 @@
+import { validateToken } from "@whop-apps/sdk";
 import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -23,11 +24,16 @@ export default async function SettingsPage({
 	const headersList = await headers();
 	const { experienceId } = await params;
 
-	// Validate user token
+	// Validate user token using @whop-apps/sdk
 	let userId: string;
 	try {
-		const token = await whopSdk.verifyUserToken(headersList);
-		userId = token.userId;
+		const { userId: validatedUserId } = await validateToken({ headers: headersList });
+
+		if (!validatedUserId) {
+			throw new Error('No userId returned from validateToken');
+		}
+
+		userId = validatedUserId;
 	} catch (error) {
 		console.error("Token validation failed:", error);
 		return (

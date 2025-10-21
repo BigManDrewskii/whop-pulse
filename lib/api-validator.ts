@@ -4,6 +4,7 @@
  */
 
 import { NextRequest } from "next/server";
+import { validateToken } from "@whop-apps/sdk";
 import { whopSdk } from "./whop-sdk";
 import {
 	sanitizeCompanyId,
@@ -28,25 +29,17 @@ export async function validateWhopAuth(
 	try {
 		const headers = request.headers;
 
-		// Debug: Log app ID before token verification
-		console.log('[API Validator] Environment check:');
-		console.log('[API Validator] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
-		console.log('[API Validator] Headers:', {
-			authorization: headers.get('authorization') ? `***${headers.get('authorization')?.slice(-8)}` : 'none',
-			'x-whop-authorization': headers.get('x-whop-authorization') ? `***${headers.get('x-whop-authorization')?.slice(-8)}` : 'none'
-		});
+		// Validate token using @whop-apps/sdk
+		console.log('[API Validator] Calling validateToken...');
+		const { userId } = await validateToken({ headers });
+		console.log('[API Validator] Token validated successfully');
 
-		// Verify token with Whop SDK
-		console.log('[API Validator] Calling whopSdk.verifyUserToken...');
-		const token = await whopSdk.verifyUserToken(headers);
-		console.log('[API Validator] Token verified successfully');
-
-		if (!token.userId) {
+		if (!userId) {
 			throw new Error("No userId in token");
 		}
 
 		// Sanitize user ID
-		const sanitizedUserId = sanitizeUserId(token.userId);
+		const sanitizedUserId = sanitizeUserId(userId);
 
 		if (!sanitizedUserId) {
 			throw new Error("Invalid userId format");
@@ -57,8 +50,7 @@ export async function validateWhopAuth(
 		console.error("[API Validator] Auth validation failed:", error);
 		console.error("[API Validator] Error details:", {
 			message: error?.message,
-			stack: error?.stack,
-			response: error?.response?.data
+			stack: error?.stack
 		});
 		throw createErrorResponse(
 			ERROR_CODES.AUTH_INVALID,

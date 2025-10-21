@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
+import { validateToken } from "@whop-apps/sdk";
 import { whopSdk } from "@/lib/whop-sdk";
 import { syncMembersFromWhop, getSyncStats } from "@/lib/whop-sync";
 
@@ -48,31 +49,27 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Validate Whop authentication
+		// Validate Whop authentication using @whop-apps/sdk
 		const headers = request.headers;
 		let userId: string;
 
 		try {
-			// Debug: Log app ID before token verification
-			console.log('[API Sync] Environment check:');
-			console.log('[API Sync] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
-			console.log('[API Sync] Headers:', {
-				authorization: headers.get('authorization') ? `***${headers.get('authorization')?.slice(-8)}` : 'none',
-				'x-whop-authorization': headers.get('x-whop-authorization') ? `***${headers.get('x-whop-authorization')?.slice(-8)}` : 'none'
-			});
+			console.log('[API Sync] Calling validateToken...');
+			const { userId: validatedUserId } = await validateToken({ headers });
 
-			console.log('[API Sync] Calling whopSdk.verifyUserToken...');
-			const token = await whopSdk.verifyUserToken(headers);
-			console.log('[API Sync] Token verified successfully');
-			userId = token.userId;
+			if (!validatedUserId) {
+				throw new Error('No userId returned from validateToken');
+			}
+
+			console.log('[API Sync] Token validated successfully');
+			userId = validatedUserId;
 
 			console.log(`[API] Authenticated user: ${userId}`);
 		} catch (authError: any) {
 			console.error("[API] Authentication failed:", authError);
 			console.error("[API] Error details:", {
 				message: authError?.message,
-				stack: authError?.stack,
-				response: authError?.response?.data
+				stack: authError?.stack
 			});
 			return NextResponse.json(
 				{ error: "Authentication required", message: "Invalid or missing token" },
