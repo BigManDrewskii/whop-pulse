@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { PageLoading } from "@/components/LoadingSpinner";
 import { InitialSyncLoader } from "@/components/InitialSyncLoader";
 import { syncMembersFromWhop } from "@/lib/whop-sync";
+import { AuthError } from "@/components/AuthError";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -89,17 +90,13 @@ export default async function ExperiencePage({
 	try {
 		const token = await whopSdk.verifyUserToken(headersList);
 		userId = token.userId;
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Token validation failed:", error);
 		return (
-			<div className="flex justify-center items-center h-screen px-8">
-				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-4">Authentication Required</h1>
-					<p className="text-gray-600">
-						Unable to verify your access. Please try again.
-					</p>
-				</div>
-			</div>
+			<AuthError
+				type="invalid_token"
+				message={error?.message}
+			/>
 		);
 	}
 
@@ -111,16 +108,7 @@ export default async function ExperiencePage({
 
 	// Redirect if no access
 	if (!accessResult.hasAccess) {
-		return (
-			<div className="flex justify-center items-center h-screen px-8">
-				<div className="text-center">
-					<h1 className="text-2xl font-bold mb-4">Access Denied</h1>
-					<p className="text-gray-600">
-						You don't have access to this experience.
-					</p>
-				</div>
-			</div>
-		);
+		return <AuthError type="no_access" />;
 	}
 
 	// Get user data

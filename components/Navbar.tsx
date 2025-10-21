@@ -4,11 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Activity, Building, Settings, HelpCircle, User, LogOut, Sun, Moon, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
 	const pathname = usePathname();
+	const router = useRouter();
 	const [showProfileMenu, setShowProfileMenu] = useState(false);
 	const [isDark, setIsDark] = useState(false);
+	const [isLoggingOut, setIsLoggingOut] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	// Get companyId from pathname
@@ -39,6 +42,32 @@ export function Navbar() {
 		setIsDark(newTheme);
 		document.documentElement.classList.toggle("dark", newTheme);
 		localStorage.setItem("theme", newTheme ? "dark" : "light");
+	};
+
+	const handleLogout = async () => {
+		setIsLoggingOut(true);
+		setShowProfileMenu(false);
+
+		try {
+			const response = await fetch("/api/auth/logout", {
+				method: "POST",
+			});
+
+			const data = await response.json();
+
+			if (response.ok) {
+				// Redirect to logged-out page
+				router.push("/logged-out");
+			} else {
+				console.error("Logout failed:", data);
+				alert("Logout failed. Please try again.");
+				setIsLoggingOut(false);
+			}
+		} catch (error) {
+			console.error("Logout error:", error);
+			alert("Logout failed. Please try again.");
+			setIsLoggingOut(false);
+		}
 	};
 
 	const navLinks = [
@@ -141,11 +170,16 @@ export function Navbar() {
 										{isDark ? "Light Mode" : "Dark Mode"}
 									</button>
 									<button
-										onClick={() => alert("Logout functionality coming soon")}
-										className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+										onClick={handleLogout}
+										disabled={isLoggingOut}
+										className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
+											isLoggingOut
+												? "text-gray-400 dark:text-gray-600 cursor-not-allowed"
+												: "text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+										}`}
 									>
-										<LogOut className="w-4 h-4" />
-										Logout
+										<LogOut className={`w-4 h-4 ${isLoggingOut ? "animate-spin" : ""}`} />
+										{isLoggingOut ? "Logging out..." : "Logout"}
 									</button>
 								</div>
 							)}
