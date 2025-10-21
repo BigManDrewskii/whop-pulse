@@ -12,14 +12,12 @@ interface InitialSyncLoaderProps {
 	status: "syncing" | "success" | "error";
 	memberCount?: number;
 	error?: string;
-	onRetry?: () => void;
 }
 
 export function InitialSyncLoader({
 	status,
 	memberCount = 0,
 	error,
-	onRetry,
 }: InitialSyncLoaderProps) {
 	const [dots, setDots] = useState("");
 
@@ -125,6 +123,10 @@ export function InitialSyncLoader({
 	}
 
 	if (status === "error") {
+		const handleRetry = () => {
+			window.location.reload();
+		};
+
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center p-4">
 				<div className="max-w-md w-full bg-white rounded-lg shadow-lg border border-red-200 p-8">
@@ -161,17 +163,15 @@ export function InitialSyncLoader({
 
 						{/* Action Buttons */}
 						<div className="flex gap-3">
-							{onRetry && (
-								<button
-									onClick={onRetry}
-									className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
-								>
-									<RefreshCw className="w-4 h-4" />
-									Try Again
-								</button>
-							)}
 							<button
-								onClick={() => window.location.reload()}
+								onClick={handleRetry}
+								className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
+							>
+								<RefreshCw className="w-4 h-4" />
+								Try Again
+							</button>
+							<button
+								onClick={handleRetry}
 								className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
 							>
 								Reload Page
