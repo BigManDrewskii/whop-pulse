@@ -51,7 +51,7 @@ export function LandingNavbar() {
 
 						{/* CTA Button */}
 						<Link
-							href="https://whop.com/apps/pulse"
+							href="https://whop.com/apps/app_kYOQwOZSTaTdhi/install/"
 							className="px-6 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow-md"
 						>
 							Install App

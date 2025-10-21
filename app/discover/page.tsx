@@ -40,7 +40,7 @@ export default function DiscoverPage() {
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<Link
-							href="https://whop.com/apps/pulse"
+							href="https://whop.com/apps/app_kYOQwOZSTaTdhi/install/"
 							className="px-8 py-4 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
 						>
 							Install Pulse →
@@ -232,7 +232,7 @@ export default function DiscoverPage() {
 
 						<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
 							<Link
-								href="https://whop.com/apps/pulse"
+								href="https://whop.com/apps/app_kYOQwOZSTaTdhi/install/"
 								className="px-10 py-4 bg-white text-primary-600 rounded-lg font-bold hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
 							>
 								Install Pulse - It's Free
