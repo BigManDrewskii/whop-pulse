@@ -54,36 +54,29 @@ async function checkSupabase(): Promise<ServiceStatus> {
 }
 
 /**
- * Check Whop API connection
+ * Check Whop SDK configuration (lightweight check)
  */
 async function checkWhop(): Promise<ServiceStatus> {
 	const startTime = Date.now();
 
 	try {
-		// Try to fetch app info as a connectivity test
-		const companyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
-
-		if (!companyId) {
-			return {
-				healthy: false,
-				latency_ms: 0,
-				error: "Company ID not configured",
-			};
-		}
-
-		// Simple API call to verify connection
-		const company = await whopSdk.companies.getCompany({ companyId });
+		// Check if SDK is properly configured
+		const hasApiKey = !!process.env.WHOP_API_KEY;
+		const hasAppId = !!process.env.NEXT_PUBLIC_WHOP_APP_ID;
+		const hasCompanyId = !!process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
 
 		const latency = Date.now() - startTime;
 
-		if (!company) {
+		if (!hasApiKey || !hasAppId) {
 			return {
 				healthy: false,
 				latency_ms: latency,
-				error: "Failed to fetch company data",
+				error: "Whop SDK not configured (missing credentials)",
 			};
 		}
 
+		// SDK is configured - assume healthy
+		// Don't make actual API calls in health check (requires auth context)
 		return {
 			healthy: true,
 			latency_ms: latency,
@@ -92,7 +85,7 @@ async function checkWhop(): Promise<ServiceStatus> {
 		return {
 			healthy: false,
 			latency_ms: Date.now() - startTime,
-			error: error.message || "Connection failed",
+			error: error.message || "Configuration check failed",
 		};
 	}
 }

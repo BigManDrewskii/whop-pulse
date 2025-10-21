@@ -17,10 +17,16 @@ export function Navbar() {
 	// Get companyId from pathname
 	const companyId = pathname?.match(/\/dashboard\/([^\/]+)/)?.[1] || process.env.NEXT_PUBLIC_WHOP_COMPANY_ID || "";
 
-	// Check theme on mount
+	// Check theme on mount (with localStorage protection for Whop iframe)
 	useEffect(() => {
-		const savedTheme = localStorage.getItem("theme");
-		setIsDark(savedTheme === "dark" || document.documentElement.classList.contains("dark"));
+		try {
+			const savedTheme = localStorage.getItem("theme");
+			setIsDark(savedTheme === "dark" || document.documentElement.classList.contains("dark"));
+		} catch (error) {
+			// localStorage might not work in Whop iframe - use default
+			console.warn("[Navbar] localStorage not available, using default theme");
+			setIsDark(false);
+		}
 	}, []);
 
 	// Close dropdown when clicking outside
@@ -41,7 +47,13 @@ export function Navbar() {
 		const newTheme = !isDark;
 		setIsDark(newTheme);
 		document.documentElement.classList.toggle("dark", newTheme);
-		localStorage.setItem("theme", newTheme ? "dark" : "light");
+
+		// Try to save theme preference (may not work in Whop iframe)
+		try {
+			localStorage.setItem("theme", newTheme ? "dark" : "light");
+		} catch (error) {
+			console.warn("[Navbar] Could not save theme preference");
+		}
 	};
 
 	const handleLogout = async () => {
