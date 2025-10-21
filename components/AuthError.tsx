@@ -1,6 +1,11 @@
+"use client";
+
 /**
  * Auth Error Component
  * User-friendly error messages for authentication failures
+ *
+ * IMPORTANT: This is a Client Component and handles retry logic internally.
+ * Never pass functions as props from Server Components!
  */
 
 import { AlertCircle, RefreshCw, ExternalLink } from "lucide-react";
@@ -8,10 +13,9 @@ import { AlertCircle, RefreshCw, ExternalLink } from "lucide-react";
 interface AuthErrorProps {
 	type: "invalid_token" | "no_access" | "connection_error" | "expired";
 	message?: string;
-	onRetry?: () => void;
 }
 
-export function AuthError({ type, message, onRetry }: AuthErrorProps) {
+export function AuthError({ type, message }: AuthErrorProps) {
 	const errorConfig = {
 		invalid_token: {
 			title: "Authentication Failed",
@@ -53,12 +57,9 @@ export function AuthError({ type, message, onRetry }: AuthErrorProps) {
 
 	const config = errorConfig[type];
 
+	// Always handle retry by reloading the page
 	const handleRetry = () => {
-		if (onRetry) {
-			onRetry();
-		} else {
-			window.location.reload();
-		}
+		window.location.reload();
 	};
 
 	const handleContactSupport = () => {
@@ -98,7 +99,7 @@ export function AuthError({ type, message, onRetry }: AuthErrorProps) {
 								className="w-full px-4 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
 							>
 								<RefreshCw className="w-5 h-5" />
-								{onRetry ? "Retry" : "Refresh Page"}
+								Refresh Page
 							</button>
 						)}
 
