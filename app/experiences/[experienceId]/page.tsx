@@ -86,29 +86,18 @@ export default async function ExperiencePage({
 	const headersList = await headers();
 	const { experienceId } = await params;
 
-	// Debug: Log environment before token validation
-	console.log('[Experience Page] Environment check:');
-	console.log('[Experience Page] NEXT_PUBLIC_WHOP_COMPANY_ID:', process.env.NEXT_PUBLIC_WHOP_COMPANY_ID);
-	console.log('[Experience Page] Experience ID:', experienceId);
-
 	// Validate user token using @whop-apps/sdk
 	let userId: string;
 	try {
-		console.log('[Experience Page] Calling validateToken...');
 		const { userId: validatedUserId } = await validateToken({ headers: headersList });
 
 		if (!validatedUserId) {
 			throw new Error('No userId returned from validateToken');
 		}
 
-		console.log('[Experience Page] Token validated successfully, userId:', validatedUserId);
 		userId = validatedUserId;
 	} catch (error: any) {
-		console.error("[Experience Page] Token validation failed:", error);
-		console.error("[Experience Page] Error details:", {
-			message: error?.message,
-			stack: error?.stack
-		});
+		console.error("[Experience Page] Token validation failed:", error?.message);
 		return (
 			<AuthError
 				type="invalid_token"

@@ -5,27 +5,18 @@
 
 import { WhopServerSdk } from "@whop/api";
 
-// Debug: Log environment variables during SDK initialization
-console.log('[Whop SDK] Initializing with:');
-console.log('[Whop SDK] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
-console.log('[Whop SDK] WHOP_API_KEY:', process.env.WHOP_API_KEY ? `***${process.env.WHOP_API_KEY.slice(-4)}` : 'undefined');
-console.log('[Whop SDK] NEXT_PUBLIC_WHOP_COMPANY_ID:', process.env.NEXT_PUBLIC_WHOP_COMPANY_ID);
-console.log('[Whop SDK] NEXT_PUBLIC_WHOP_AGENT_USER_ID:', process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID);
-
 // Validate required environment variables
 if (!process.env.NEXT_PUBLIC_WHOP_APP_ID) {
 	console.error('[Whop SDK] CRITICAL ERROR: NEXT_PUBLIC_WHOP_APP_ID is not set!');
-	console.error('[Whop SDK] Please set this in your .env.local file or Vercel environment variables');
 	console.error('[Whop SDK] Expected format: app_xxxxxxxxxxxxx');
 }
 
 if (!process.env.WHOP_API_KEY) {
 	console.error('[Whop SDK] CRITICAL ERROR: WHOP_API_KEY is not set!');
-	console.error('[Whop SDK] Please set this in your .env.local file or Vercel environment variables');
 }
 
 if (!process.env.NEXT_PUBLIC_WHOP_APP_ID?.startsWith('app_')) {
-	console.error('[Whop SDK] ERROR: NEXT_PUBLIC_WHOP_APP_ID has invalid format. Expected: app_xxxxxxxxxxxxx, Got:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
+	console.error('[Whop SDK] ERROR: Invalid NEXT_PUBLIC_WHOP_APP_ID format:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
 }
 
 export const whopSdk = WhopServerSdk({
@@ -49,8 +40,6 @@ export const whopSdk = WhopServerSdk({
 	// This can also be applied later with the `withCompany` function.
 	companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
 });
-
-console.log('[Whop SDK] Initialization complete');
 
 /**
  * Helper functions for Whop API

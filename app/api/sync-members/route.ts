@@ -54,23 +54,15 @@ export async function POST(request: NextRequest) {
 		let userId: string;
 
 		try {
-			console.log('[API Sync] Calling validateToken...');
 			const { userId: validatedUserId } = await validateToken({ headers });
 
 			if (!validatedUserId) {
 				throw new Error('No userId returned from validateToken');
 			}
 
-			console.log('[API Sync] Token validated successfully');
 			userId = validatedUserId;
-
-			console.log(`[API] Authenticated user: ${userId}`);
 		} catch (authError: any) {
-			console.error("[API] Authentication failed:", authError);
-			console.error("[API] Error details:", {
-				message: authError?.message,
-				stack: authError?.stack
-			});
+			console.error("[API Sync] Authentication failed:", authError?.message);
 			return NextResponse.json(
 				{ error: "Authentication required", message: "Invalid or missing token" },
 				{ status: 401 }

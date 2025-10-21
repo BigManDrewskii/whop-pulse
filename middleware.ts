@@ -9,11 +9,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Debug: Log environment variables at middleware initialization
-console.log('[Middleware] Environment check:');
-console.log('[Middleware] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
-console.log('[Middleware] NEXT_PUBLIC_WHOP_COMPANY_ID:', process.env.NEXT_PUBLIC_WHOP_COMPANY_ID);
-
 // Public routes that don't require authentication
 const PUBLIC_ROUTES = [
 	"/api/health",
