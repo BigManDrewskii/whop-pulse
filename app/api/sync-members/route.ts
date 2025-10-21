@@ -53,12 +53,27 @@ export async function POST(request: NextRequest) {
 		let userId: string;
 
 		try {
+			// Debug: Log app ID before token verification
+			console.log('[API Sync] Environment check:');
+			console.log('[API Sync] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
+			console.log('[API Sync] Headers:', {
+				authorization: headers.get('authorization') ? `***${headers.get('authorization')?.slice(-8)}` : 'none',
+				'x-whop-authorization': headers.get('x-whop-authorization') ? `***${headers.get('x-whop-authorization')?.slice(-8)}` : 'none'
+			});
+
+			console.log('[API Sync] Calling whopSdk.verifyUserToken...');
 			const token = await whopSdk.verifyUserToken(headers);
+			console.log('[API Sync] Token verified successfully');
 			userId = token.userId;
 
 			console.log(`[API] Authenticated user: ${userId}`);
-		} catch (authError) {
+		} catch (authError: any) {
 			console.error("[API] Authentication failed:", authError);
+			console.error("[API] Error details:", {
+				message: authError?.message,
+				stack: authError?.stack,
+				response: authError?.response?.data
+			});
 			return NextResponse.json(
 				{ error: "Authentication required", message: "Invalid or missing token" },
 				{ status: 401 }

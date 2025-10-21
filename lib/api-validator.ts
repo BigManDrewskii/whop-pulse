@@ -28,8 +28,18 @@ export async function validateWhopAuth(
 	try {
 		const headers = request.headers;
 
+		// Debug: Log app ID before token verification
+		console.log('[API Validator] Environment check:');
+		console.log('[API Validator] NEXT_PUBLIC_WHOP_APP_ID:', process.env.NEXT_PUBLIC_WHOP_APP_ID);
+		console.log('[API Validator] Headers:', {
+			authorization: headers.get('authorization') ? `***${headers.get('authorization')?.slice(-8)}` : 'none',
+			'x-whop-authorization': headers.get('x-whop-authorization') ? `***${headers.get('x-whop-authorization')?.slice(-8)}` : 'none'
+		});
+
 		// Verify token with Whop SDK
+		console.log('[API Validator] Calling whopSdk.verifyUserToken...');
 		const token = await whopSdk.verifyUserToken(headers);
+		console.log('[API Validator] Token verified successfully');
 
 		if (!token.userId) {
 			throw new Error("No userId in token");
@@ -45,6 +55,11 @@ export async function validateWhopAuth(
 		return { userId: sanitizedUserId };
 	} catch (error: any) {
 		console.error("[API Validator] Auth validation failed:", error);
+		console.error("[API Validator] Error details:", {
+			message: error?.message,
+			stack: error?.stack,
+			response: error?.response?.data
+		});
 		throw createErrorResponse(
 			ERROR_CODES.AUTH_INVALID,
 			"Invalid or expired authentication token"
