@@ -1,0 +1,181 @@
+/* Custom Pulse Theme - Light Mode */
+:root, .light, .light-theme {
+  /* Primary Brand Colors */
+  --color-background: #e7e5e4;
+  --color-panel: #f5f5f4;
+  --color-surface: #ffffff;
+
+  /* Text Colors */
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-tertiary: #94a3b8;
+
+  /* Primary Indigo Accent (12-step scale) */
+  --indigo-1: #f8f9ff;
+  --indigo-2: #f0f2ff;
+  --indigo-3: #e5e8ff;
+  --indigo-4: #d6dbff;
+  --indigo-5: #c2caff;
+  --indigo-6: #a8b4ff;
+  --indigo-7: #8b9aff;
+  --indigo-8: #6b7cff;
+  --indigo-9: #6366f1;
+  --indigo-10: #5558e3;
+  --indigo-11: #4a4dc9;
+  --indigo-12: #2e3192;
+
+  /* Status Colors - Success (Green) 12-step scale */
+  --success-1: #f0fdf4;
+  --success-2: #dcfce7;
+  --success-3: #bbf7d0;
+  --success-4: #86efac;
+  --success-5: #4ade80;
+  --success-6: #22c55e;
+  --success-7: #16a34a;
+  --success-8: #15803d;
+  --success-9: #10b981;
+  --success-10: #059669;
+  --success-11: #047857;
+  --success-12: #14532d;
+  --color-success: #10b981;
+
+  /* Status Colors - Warning (Yellow) 12-step scale */
+  --warning-1: #fffbeb;
+  --warning-2: #fef3c7;
+  --warning-3: #fde68a;
+  --warning-4: #fcd34d;
+  --warning-5: #fbbf24;
+  --warning-6: #f59e0b;
+  --warning-7: #d97706;
+  --warning-8: #b45309;
+  --warning-9: #f59e0b;
+  --warning-10: #92400e;
+  --warning-11: #78350f;
+  --warning-12: #713f12;
+  --color-warning: #f59e0b;
+
+  /* Status Colors - Error (Red) 12-step scale */
+  --error-1: #fef2f2;
+  --error-2: #fee2e2;
+  --error-3: #fecaca;
+  --error-4: #fca5a5;
+  --error-5: #f87171;
+  --error-6: #ef4444;
+  --error-7: #dc2626;
+  --error-8: #b91c1c;
+  --error-9: #ef4444;
+  --error-10: #991b1b;
+  --error-11: #7f1d1d;
+  --error-12: #7f1d1d;
+  --color-error: #ef4444;
+
+  /* Borders & Separators */
+  --color-border: #d6d3d1;
+  --color-border-subtle: #e7e5e4;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+}
+
+/* Custom Pulse Theme - Dark Mode */
+.dark, .dark-theme {
+  /* Primary Brand Colors */
+  --color-background: #18181b; /* Darker for better contrast */
+  --color-panel: #27272a;
+  --color-surface: #3a3633;
+
+  /* Text Colors */
+  --color-text: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+
+  /* Primary Indigo Accent (12-step scale) */
+  --indigo-1: #1a1d2e;
+  --indigo-2: #1f2333;
+  --indigo-3: #272c41;
+  --indigo-4: #2e3349;
+  --indigo-5: #3a3f5c;
+  --indigo-6: #4a5072;
+  --indigo-7: #5f668f;
+  --indigo-8: #7882b3;
+  --indigo-9: #818cf8;
+  --indigo-10: #9da4ff;
+  --indigo-11: #b5baff;
+  --indigo-12: #d6d9ff;
+
+  /* Status Colors - Success (Green) 12-step scale */
+  --success-1: #14532d;
+  --success-2: #166534;
+  --success-3: #15803d;
+  --success-4: #16a34a;
+  --success-5: #22c55e;
+  --success-6: #4ade80;
+  --success-7: #86efac;
+  --success-8: #bbf7d0;
+  --success-9: #34d399;
+  --success-10: #6ee7b7;
+  --success-11: #a7f3d0;
+  --success-12: #d1fae5;
+  --color-success: #34d399;
+
+  /* Status Colors - Warning (Yellow) 12-step scale */
+  --warning-1: #713f12;
+  --warning-2: #854d0e;
+  --warning-3: #92400e;
+  --warning-4: #b45309;
+  --warning-5: #d97706;
+  --warning-6: #fbbf24;
+  --warning-7: #fcd34d;
+  --warning-8: #fde68a;
+  --warning-9: #fbbf24;
+  --warning-10: #fef08a;
+  --warning-11: #fef3c7;
+  --warning-12: #fffbeb;
+  --color-warning: #fbbf24;
+
+  /* Status Colors - Error (Red) 12-step scale */
+  --error-1: #7f1d1d;
+  --error-2: #991b1b;
+  --error-3: #b91c1c;
+  --error-4: #dc2626;
+  --error-5: #ef4444;
+  --error-6: #f87171;
+  --error-7: #fca5a5;
+  --error-8: #fecaca;
+  --error-9: #f87171;
+  --error-10: #fee2e2;
+  --error-11: #fee2e2;
+  --error-12: #fef2f2;
+  --color-error: #f87171;
+
+  /* Borders & Separators */
+  --color-border: #3a3633;
+  --color-border-subtle: #2c2825;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
+/* Override Frosted UI variables to use our custom theme */
+:root {
+  /* Map our colors to Radix/Frosted UI tokens */
+  --accent-9: var(--indigo-9);
+  --accent-10: var(--indigo-10);
+  --accent-11: var(--indigo-11);
+  --accent-12: var(--indigo-12);
+
+  /* Backgrounds */
+  --gray-1: var(--color-background);
+  --gray-2: var(--color-panel);
+  --gray-3: var(--color-surface);
+}
