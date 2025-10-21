@@ -62,11 +62,18 @@ export function DiscoverClientUI() {
 		);
 	}
 
-	// If user is already in Whop context, show different message
+	// If user is already in Whop context, show navigation help
 	if (isInWhop) {
+		const handleGoBack = () => {
+			if (typeof window !== "undefined") {
+				window.history.back();
+			}
+		};
+
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center p-4">
 				<div className="max-w-2xl w-full bg-white rounded-2xl p-12 text-center shadow-xl border border-gray-200">
+					{/* Icon with arrow pointing up */}
 					<div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
 						<svg
 							className="w-12 h-12 text-primary-600"
@@ -78,21 +85,44 @@ export function DiscoverClientUI() {
 								strokeLinecap="round"
 								strokeLinejoin="round"
 								strokeWidth={2}
-								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+								d="M5 10l7-7m0 0l7 7m-7-7v18"
 							/>
 						</svg>
 					</div>
+
 					<h1 className="text-3xl font-bold text-gray-900 mb-4">
-						You're Already in Whop!
+						You're Viewing the Public Landing Page
 					</h1>
-					<p className="text-xl text-gray-600 mb-6">
-						To access your Pulse dashboard, look for the <strong>Pulse</strong>{" "}
-						app in your Whop sidebar.
+
+					<p className="text-xl text-gray-600 mb-8">
+						To access your Pulse dashboard and member data, use the <strong className="text-primary-600">"Dashboard"</strong> button in the navigation bar at the top of this page.
 					</p>
-					<div className="bg-primary-50 rounded-lg p-6 border border-primary-200">
-						<p className="text-primary-800 font-medium">
-							💡 Tip: You'll find Pulse in the "Apps" or "Experiences" section of
-							your sidebar.
+
+					{/* Go Back Button */}
+					<button
+						onClick={handleGoBack}
+						className="px-8 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 shadow-lg hover:shadow-xl inline-flex items-center gap-2"
+					>
+						<svg
+							className="w-5 h-5"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeWidth={2}
+								d="M10 19l-7-7m0 0l7-7m-7 7h18"
+							/>
+						</svg>
+						Go Back
+					</button>
+
+					{/* Helpful tip */}
+					<div className="bg-blue-50 rounded-lg p-6 border border-blue-200 mt-8">
+						<p className="text-blue-800 font-medium text-sm">
+							💡 Tip: Look for "Dashboard", "Settings", or "Help" in the navigation bar above.
 						</p>
 					</div>
 				</div>
