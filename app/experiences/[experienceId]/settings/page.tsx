@@ -152,6 +152,7 @@ export default async function SettingsPage({
 				<SettingsClientUI
 					userName={user.name || "User"}
 					companyId={companyId}
+					experienceId={experienceId}
 					lastSyncAt={lastSyncAt}
 					memberCount={memberCount}
 				/>

@@ -3,6 +3,7 @@ import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import { supabase } from "@/lib/supabase";
 import type { MemberActivity } from "@/lib/types";
+import { generateMockMembers } from "@/lib/mock-data";
 import { DashboardClientUI, DashboardLoadingState } from "./client-ui";
 import { ErrorBoundary, APIErrorDisplay } from "./error-boundary";
 import { Suspense } from "react";
@@ -79,12 +80,18 @@ async function fetchMembersData(companyId: string): Promise<MemberActivity[]> {
 
 export default async function ExperiencePage({
 	params,
+	searchParams,
 }: {
 	params: Promise<{ companyId: string }>;
+	searchParams: Promise<{ demo?: string }>;
 }) {
-	// Get headers and params
+	// Get headers, params, and search params
 	const headersList = await headers();
 	const { companyId } = await params;
+	const { demo } = await searchParams;
+
+	// Check if demo mode is enabled via URL parameter
+	const isDemoMode = demo === "true";
 
 	// Validate user token using @whop-apps/sdk
 	let userId: string;
@@ -152,13 +159,19 @@ export default async function ExperiencePage({
 	}
 
 	// Get company ID
-	// Fetch members data with error handling
+	// Fetch members data with error handling (or use mock data if demo mode)
 	let membersData: MemberActivity[];
 	try {
-		membersData = await fetchMembersData(companyId);
+		// Use mock data if demo mode is enabled, otherwise fetch real data
+		if (isDemoMode) {
+			console.log("[Pulse] Demo mode enabled - using mock data");
+			membersData = generateMockMembers(companyId);
+		} else {
+			membersData = await fetchMembersData(companyId);
+		}
 
 		// If we just synced but still have no data, show error
-		if (needsInitialSync && membersData.length === 0 && syncResult) {
+		if (!isDemoMode && needsInitialSync && membersData.length === 0 && syncResult) {
 			if (!syncResult.success) {
 				return (
 					<div className="min-h-screen flex items-center justify-center">

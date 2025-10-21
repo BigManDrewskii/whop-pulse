@@ -106,7 +106,10 @@ export default async function SettingsPage({
 
 			{/* Settings Content */}
 			<div className="max-w-7xl mx-auto px-4 py-8">
-				<SettingsClientUI userName={user.name || "User"} />
+				<SettingsClientUI
+				userName={user.name || "User"}
+				companyId={companyId}
+			/>
 			</div>
 		</div>
 	);

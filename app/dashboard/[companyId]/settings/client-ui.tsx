@@ -1,18 +1,23 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Toast } from "@/components/Toast";
 import { ButtonSpinner } from "@/components/LoadingSpinner";
 
 interface SettingsClientUIProps {
 	userName: string;
+	companyId: string;
 	onShowTutorial?: () => void;
 }
 
 export function SettingsClientUI({
 	userName,
+	companyId,
 	onShowTutorial,
 }: SettingsClientUIProps) {
+	const router = useRouter();
+
 	// Engagement Thresholds
 	const [activeDays, setActiveDays] = useState(7);
 	const [atRiskDays, setAtRiskDays] = useState(30);
@@ -266,7 +271,16 @@ export function SettingsClientUI({
 							</p>
 						</div>
 						<button
-							onClick={() => setShowDemoData(!showDemoData)}
+							onClick={() => {
+								const newValue = !showDemoData;
+								setShowDemoData(newValue);
+								// Update URL to toggle demo mode
+								router.push(`/dashboard/${companyId}${newValue ? '?demo=true' : ''}`);
+								// Show toast notification
+								setToastMessage(`Demo data ${newValue ? 'enabled' : 'disabled'}`);
+								setToastType("success");
+								setShowToast(true);
+							}}
 							className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 ${
 								showDemoData ? "bg-primary-600" : "bg-gray-200"
 							}`}
