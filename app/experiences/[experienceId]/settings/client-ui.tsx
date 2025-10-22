@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Toast } from "@/components/Toast";
 import { ButtonSpinner } from "@/components/LoadingSpinner";
 import { RefreshCw, Check, AlertTriangle, Database } from "lucide-react";
@@ -10,7 +9,6 @@ import { formatDistanceToNow } from "date-fns";
 interface SettingsClientUIProps {
 	userName: string;
 	companyId: string;
-	experienceId: string;
 	lastSyncAt: string | null;
 	memberCount: number;
 	onShowTutorial?: () => void;
@@ -19,13 +17,10 @@ interface SettingsClientUIProps {
 export function SettingsClientUI({
 	userName,
 	companyId,
-	experienceId,
 	lastSyncAt,
 	memberCount,
 	onShowTutorial,
 }: SettingsClientUIProps) {
-	const router = useRouter();
-
 	// Engagement Thresholds
 	const [activeDays, setActiveDays] = useState(7);
 	const [atRiskDays, setAtRiskDays] = useState(30);
@@ -35,7 +30,6 @@ export function SettingsClientUI({
 	const [dailyDigest, setDailyDigest] = useState(false);
 
 	// Display Options
-	const [showDemoData, setShowDemoData] = useState(true);
 	const [defaultFilter, setDefaultFilter] = useState<string>("all");
 
 	// Reset confirmation
@@ -73,7 +67,6 @@ export function SettingsClientUI({
 		setAtRiskDays(30);
 		setEmailAtRisk(false);
 		setDailyDigest(false);
-		setShowDemoData(true);
 		setDefaultFilter("all");
 		setShowResetConfirm(false);
 		setToastMessage("Settings reset to defaults!");
@@ -454,42 +447,6 @@ export function SettingsClientUI({
 				</div>
 
 				<div className="space-y-4">
-					{/* Show Demo Data Toggle */}
-					<div className="flex items-center justify-between py-3 border-b border-gray-100">
-						<div className="flex-1">
-							<label
-								htmlFor="demo-data"
-								className="text-sm font-medium text-gray-700"
-							>
-								Show demo data
-							</label>
-							<p className="text-xs text-gray-500 mt-1">
-								Display sample member data for testing and demonstrations
-							</p>
-						</div>
-						<button
-							onClick={() => {
-								const newValue = !showDemoData;
-								setShowDemoData(newValue);
-								// Update URL to toggle demo mode
-								router.push(`/experiences/${experienceId}${newValue ? '?demo=true' : ''}`);
-								// Show toast notification
-								setToastMessage(`Demo data ${newValue ? 'enabled' : 'disabled'}`);
-								setToastType("success");
-								setShowToast(true);
-							}}
-							className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 ${
-								showDemoData ? "bg-primary-600" : "bg-gray-200"
-							}`}
-						>
-							<span
-								className={`${
-									showDemoData ? "translate-x-5" : "translate-x-0"
-								} inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
-							/>
-						</button>
-					</div>
-
 					{/* Default Filter Select */}
 					<div className="py-3">
 						<label
